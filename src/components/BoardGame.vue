@@ -59,9 +59,9 @@ function checkWinner() {
     const [a, b, c] = line;
     const currentBoard = game.value;
     if (
-        currentBoard[a] == currentBoard[b] &&
-        currentBoard[b] == currentBoard[c] &&
-        currentBoard[a] != undefined
+        currentBoard[a] === currentBoard[b] &&
+        currentBoard[b] === currentBoard[c] &&
+        currentBoard[a] !== undefined
     ) {
       result = true;
     }
@@ -74,9 +74,6 @@ function drawCheck() {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-}
 .board {
   display: grid;
   grid-gap: 15px;
