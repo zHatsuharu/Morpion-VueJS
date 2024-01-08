@@ -5,7 +5,6 @@
         v-for="cell in cells"
         :key="cell"
         :id="cell"
-        :turn="props.turn"
         :ended="ended"
     />
   </div>
@@ -14,12 +13,10 @@
 <script setup>
 
 import BoardCell from "@/components/BoardCell.vue";
-import {ref, watch} from "vue";
+import {inject, ref, watch} from "vue";
 
-const props = defineProps({
-  turn: String
-});
-const emit = defineEmits(['changeTurn', 'winnerFound', 'draw']);
+const {turn, changeTurn} = inject('status');
+const emit = defineEmits(['winnerFound', 'draw']);
 
 const cells = ref([...Array(9)].map((_, index) => index));
 const game = ref(Array(9));
@@ -27,7 +24,7 @@ const ended = ref(false);
 
 function refreshGame(id) {
   const newBoard = [...game.value];
-  newBoard[id] = props.turn;
+  newBoard[id] = turn.value;
   game.value = newBoard;
 }
 
@@ -39,7 +36,7 @@ watch(game, () => {
     if (drawCheck()) {
       emit('draw');
     } else {
-      emit('changeTurn');
+      changeTurn();
     }
   }
 });
@@ -72,10 +69,7 @@ function checkWinner() {
   return result;
 }
 function drawCheck() {
-  if (game.value.some(cell => cell === undefined)) {
-    return false;
-  }
-  return true;
+  return !game.value.some(cell => cell === undefined);
 }
 </script>
 

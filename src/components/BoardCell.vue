@@ -3,11 +3,11 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {inject, ref} from "vue";
 
+const {turn} = inject("status");
 const props = defineProps({
   id: Number,
-  turn: String,
   ended: Boolean
 });
 const value = ref("");
@@ -17,7 +17,7 @@ const emit = defineEmits(['cellClicked']);
 function clickHandler() {
   if (value.value === '' && !props.ended) {
     emit('cellClicked', props.id);
-    value.value = props.turn;
+    value.value = turn.value;
   }
 }
 </script>

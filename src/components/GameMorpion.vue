@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <Board
-      :turn="turn"
-      @changeTurn="newTurn"
       @winnerFound="setWinner"
       @draw="setDraw"
     />
@@ -22,14 +20,19 @@
 <script setup>
 
 import Board from "@/components/BoardGame.vue";
-import {ref} from "vue";
+import {provide, ref} from "vue";
 
 const turn = ref((['X', 'O'])[Math.round(Math.random())]);
 const winner = ref('');
 const isDraw = ref(false);
-const newTurn = () => turn.value = turn.value === 'X' ? 'O' : 'X';
+const changeTurn = () => turn.value = turn.value === 'X' ? 'O' : 'X';
 const setWinner = () => winner.value = turn.value;
 const setDraw = () => isDraw.value = true;
+
+provide('status', {
+  turn,
+  changeTurn
+});
 </script>
 
 <style scoped>
